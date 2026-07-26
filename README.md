@@ -1,31 +1,69 @@
-Dijital Günlük Uygulaması
+# JournalStack
 
-Bu proje, hem mobil uygulama geliştirmeyi hem de veritabanı yönetimini öğrenmek amacıyla geliştirilmiş bir full stack günlük tutma sistemidir. Kullanıcılar kayıt olup giriş yapabilir, günlüklerini kaydedebilir ve geçmiş kayıtlarını listeleyebilir.
+> A full-stack mobile journal built with React Native, Express, and PostgreSQL.
 
-Proje Özellikleri
+![React Native](https://img.shields.io/badge/React_Native-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 
-Kullanıcı Sistemi: PostgreSQL tabanlı kayıt olma ve giriş yapma özelliği mevcuttur. Güvenli Veri Saklama: Giriş yapan kullanıcının kimlik bilgileri cihaz hafızasında tutulur ve her kullanıcı sadece kendi kayıtlarına erişebilir. Dinamik İçerik: Her açılışta ZenQuotes API aracılığıyla motivasyonel bir söz ekrana getirilir. Modern Arayüz: Expo Router ve React Native kullanılarak sade bir tasarım uygulanmıştır. Backend Yapısı: Node.js ve Express.js kullanılarak veritabanı iletişimi sağlanmıştır.
+## Overview
 
-Veritabanı Yapısı
+JournalStack is a mobile journaling project that connects a React Native interface to a small Express API and PostgreSQL database. It helped me move beyond local-only state and understand how screens, HTTP requests, relational data, and user-specific records work together.
 
-Projeyi çalıştırmak için PostgreSQL üzerinde aşağıdaki tabloların oluşturulması gerekmektedir:
+## Features
 
-Kullanicilar Tablosu CREATE TABLE kullanicilar ( id SERIAL PRIMARY KEY, kullanici_adi VARCHAR(255) UNIQUE NOT NULL, sifre VARCHAR(255) NOT NULL );
+- Register and sign in with a user account
+- Store the active user ID locally
+- Create journal entries with a title and body
+- Load entries belonging to the signed-in user
+- Open individual entry detail screens
+- Display a motivational quote from an external API
 
-Gunlukler Tablosu CREATE TABLE gunlukler ( id SERIAL PRIMARY KEY, kullanici_id INTEGER REFERENCES kullanicilar(id), baslik VARCHAR(255), icerik TEXT, olusturma_tarihi TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+## Stack
 
-Kullanılan Teknolojiler
+| Layer | Technology |
+| --- | --- |
+| Mobile frontend | React Native, Expo, Expo Router |
+| Language | TypeScript, JavaScript |
+| API | Node.js, Express |
+| Database | PostgreSQL, node-postgres |
+| Local session | AsyncStorage |
 
-Frontend: React Native Expo Expo Router AsyncStorage Ionicons
+## API surface
 
-Backend ve Veritabanı: Node.js Express.js PostgreSQL Node-postgres (pg)
+```text
+POST /giris
+POST /kayit
+POST /gunluk-ekle
+GET  /gunlukleri-getir/:kullanici_id
+```
 
-Kurulum Talimatları
+## Data model
 
-Veritabanı Hazırlığı: Yukarıda belirtilen SQL komutlarını PostgreSQL veritabanınızda çalıştırın.
+The database uses a one-to-many relationship: one user can own multiple journal entries, and every entry references its owner through `kullanici_id`.
 
-Backend Başlatma: Backend dizininde node index.js komutunu çalıştırın. Sunucu 3000 portunda çalışmaya başlayacaktır.
+## Run locally
 
-Uygulamayı Çalıştırma: Mobil uygulama dizininde npx expo start komutu ile projeyi başlatın.
+```bash
+git clone https://github.com/mustafasenyusz/JournalStack.git
+cd JournalStack
+npm install
+node database.js
+npx expo start
+```
 
-Not: Bu proje eğitim amaçlı geliştirilmiştir. Backend dosyası içerisindeki PostgreSQL bağlantı bilgileri ve IP adreslerinin yerel kurulumunuza göre düzenlenmesi gerekmektedir.
+Create the PostgreSQL tables described by the API code, then update the local database connection and client API base URL.
+
+## Engineering roadmap
+
+- Move connection values into environment configuration
+- Add password hashing and token-based sessions
+- Add update and delete operations for entries
+- Introduce schema migrations, validation, and API tests
+
+JournalStack documents my progress on the backend and database side while keeping a mobile-first frontend at the center.
+
+## Developer
+
+Built by [Mustafa Şenyüz](https://github.com/mustafasenyusz).
